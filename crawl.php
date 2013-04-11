@@ -29,6 +29,15 @@ $domain_array = explode(',',$domains);
 	echo "<p>database: <b>$mysql_db</b></p>";
 	echo "<p><b>Crawling...</b></p>";
 	
+	$urls = uncrawled_urls($crawl_tag);
+	// In order to kickstart a new crawl, the "init" parameter allows you to start at the homepage
+	// of the configured domain.
+	// Usage: crawl.php?init=1
+	if (count($urls) == 0 && $_GET['init'] == '1') {
+		$init_site = $domain_array[0] . '/';
+		add_url($init_site, 0, $crawl_tag);
+	}
+		
 	/*
 	 * Grab list of uncrawled URLs, repeat while there are still URLs to crawl
 	 */

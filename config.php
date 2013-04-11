@@ -8,9 +8,9 @@
  /**
   * MySQL Connection Settings
   */
- $mysql_server = 'localhost';
+ $mysql_server = 'localhost'; //On mac and other machines that don't recognise localhost, use 127.0.0.1
  $mysql_user = 'root';
- $mysql_pass = 'galgren'; 
+ $mysql_pass = ''; 
  $mysql_db = 'fcc_crawler';
 
 /**
@@ -67,15 +67,18 @@ $store_local = True; // Set to False to not store
  * Check to ensure settings are not defaults
  */
 
-if ($mysql_server == ''|$mysql_user == ''|$mysql_pass==''|$mysql_db=='') die('You must enter MySQL information in config.php before continuing');
+if ($mysql_server == ''|| $mysql_user == '' || $mysql_db=='') die('You must enter MySQL information in config.php before continuing');
  
 if ($domains == '') die('You must enter one or more domains in config.php before continuing');
  
 /**
  * Initiate database connection
  */
-$db=mysql_connect ($mysql_server, $mysql_user, $mysql_pass) or die ('I cannot connect to the database because: ' . mysql_error());
-
+if (empty($mysql_pass)) {
+	$db=mysql_connect ($mysql_server, $mysql_user) or die ('I cannot connect to the database without a password because: ' . mysql_error());
+} else {
+	$db=mysql_connect ($mysql_server, $mysql_user, $mysql_pass) or die ('I cannot connect to the database because: ' . mysql_error());
+}
 /**
  * Select DB
  */
